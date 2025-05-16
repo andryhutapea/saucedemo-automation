@@ -1,5 +1,30 @@
-venv/
+
+# Python
 __pycache__/
 *.pyc
-reports/
+*.pyo
+*.pyd
 .env
+.venv
+venv/
+Pipfile.lock
+
+# pytest
+.cache/
+.pytest_cache/
+
+# Allure results & reports
+/reports/allure-results/
+/reports/allure-report/
+
+# pytest-html reports
+/reports/screenshots/
+/reports/report.html
+
+# Logs (optional)
+*.log
+
+
+# MacOS / Linux / Windows files
+.DS_Store
+Thumbs.db
