@@ -1,5 +1,4 @@
 import os
-import sys
 from pytest_bdd import scenarios, given, when, then, parsers
 from pages.login_page import LoginPage
 from pages.inventory_page import InventoryPage
@@ -7,8 +6,6 @@ from pages.cart_page import CartPage
 from pages.menu_page import MenuPage
 from dotenv import load_dotenv
 
-# Tambahkan path agar bisa impor modul dari folder 'pages'
-# sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 load_dotenv()
 USERNAME = os.getenv("USERNAME")

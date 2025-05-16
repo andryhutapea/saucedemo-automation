@@ -18,7 +18,3 @@ Feature: Automate SauceDemo
     When user login with Valid Account
     And user opens the Hamburger menu and click "About"
     Then user should be redirected to About page
-
-
-#   pytest --html=reports/report.html --self-contained-html --browser=headed
-#  ./run_saucedemo_tests.sh
