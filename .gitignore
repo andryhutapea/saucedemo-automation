@@ -13,13 +13,13 @@ Pipfile.lock
 .cache/
 .pytest_cache/
 
-## Allure results & reports
-#/reports/allure-results/
-#/reports/allure-report/
-#
-## pytest-html reports
-#/reports/screenshots/
-#/reports/report.html
+# Allure results & reports
+/reports/allure-results/
+/reports/allure-report/
+
+# pytest-html reports
+/reports/screenshots/
+/reports/report.html
 
 # Logs (optional)
 *.log
