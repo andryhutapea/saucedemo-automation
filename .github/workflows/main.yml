@@ -1,47 +1,71 @@
-name: Run Automation Test
+name: Run Automation Tests
 
 on:
   push:
     branches: [main]
   pull_request:
-    branches: [main]
-  workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Python
+      - name: 🐍 Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests with Allure and HTML report
+      - name: 🧪 Install Google Chrome
         run: |
-          # Clean old reports
-          rm -rf reports/allure-results reports/allure-report reports/screenshots reports/report.html
-          
-          # Run tests
-          pytest --alluredir=reports/allure-results \
+          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+          sudo apt install -y ./google-chrome-stable_current_amd64.deb
+
+      - name: 🚙 Install ChromeDriver
+        run: |
+          CHROME_VERSION=$(google-chrome --version | grep -oP '\d+\.\d+\.\d+')
+          DRIVER_VERSION=$(curl -s "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION")
+          wget "https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip"
+          unzip chromedriver_linux64.zip
+          sudo mv chromedriver /usr/local/bin/
+          sudo chmod +x /usr/local/bin/chromedriver
+
+      - name: 🧹 Clean old reports
+        run: |
+          rm -rf reports/allure-results reports/allure-report reports/report.html reports/screenshots
+
+      - name: 🚀 Run tests with Pytest
+        run: |
+          pytest --browser=headless \
+                 --alluredir=reports/allure-results \
                  --html=reports/report.html \
                  --self-contained-html
 
-      - name: Upload HTML report artifact
+      - name: 🧾 Generate Allure Report
+        run: |
+          npm install -g allure-commandline --save-dev
+          allure generate reports/allure-results --clean -o reports/allure-report
+
+      - name: 📤 Upload HTML Report as Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: pytest-html-report
+          name: html-report
           path: reports/report.html
 
-      - name: Upload Allure results
+      - name: 📤 Upload Screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots
+          path: reports/screenshots
+
+      - name: 📤 Upload Allure Results
         uses: actions/upload-artifact@v4
         with:
           name: allure-results
