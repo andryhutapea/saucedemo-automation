@@ -1,7 +1,13 @@
 name: 🧪 Run Automation Tests
 
 on:
-    workflow_dispatch:
+  workflow_dispatch:     # ✅ Bisa manual trigger dari UI GitHub
+  push:                  # ✅ Otomatis jalan setiap ada push ke branch tertentu
+    branches:
+      - main             
+  pull_request:          # ✅ Otomatis jalan saat ada PR ke branch tertentu
+    branches:
+      - main             
 
 jobs:
   test:
