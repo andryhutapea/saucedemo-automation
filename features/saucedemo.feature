@@ -10,7 +10,7 @@ Feature: Automate SauceDemo
   Scenario: User can Add "Sauce Labs Fleece Jacket" to cart
     Given user open Login page
     When user login with Valid Account
-    And user add product to Chart
+    And user add "Sauce Labs Fleece Jacket" to Chart
     Then Chart must contain item "Sauce Labs Fleece Jacket"
 
   Scenario: User can open About page from Hamburger menu
