@@ -5,6 +5,7 @@ from pages.inventory_page import InventoryPage
 from pages.cart_page import CartPage
 from pages.menu_page import MenuPage
 from dotenv import load_dotenv
+import pdb;
 
 
 load_dotenv()
@@ -29,11 +30,19 @@ def add_to_cart(driver, item):
     InventoryPage(driver).add_to_cart(item)
 
 
-@then(parsers.parse('Chart must contain item "{item}"'))
-def verify_cart(driver, item):
-    cart = CartPage(driver)
-    cart.open_cart()
-    assert cart.is_item_in_cart(item), f"Item '{item}' not found in cart!"
+@when(parsers.parse('user add "{item}" to Chart'))
+def add_to_cart(driver, item):
+    InventoryPage(driver).add_to_cart(item)
+
+
+@when(parsers.parse('user adds all products containing "{text}" to the cart'))
+def add_all_matching_products(driver, text):
+    CartPage(driver).add_all_products_with_text(text)
+
+
+@then(parsers.parse('cart should contain all "{text}" products'))
+def verify_all_matching_products_in_cart(driver, text):
+    assert CartPage(driver).verify_all_products_in_cart(text)
 
 
 @when(parsers.parse('user opens the Hamburger menu and click "{menu_item}"'))
